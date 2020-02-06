@@ -12,18 +12,29 @@ router.post("/api/workout", (req, res) => {
 
 router.put("/api/workouts/:id", ({ body, params }, res) => {
     Workout.findByIdAndUpdate(
-      params.id,
+      req.params.id,
       { $push: { exercises: body }
     }).then(dbWorkout => {
         res.json(dbWorkout);
       })
       .catch(err => {
         res.json(err);
-      })
+      });
+});
+
+router.get("/api/workouts/:id", (req, res) => {
+    Workout.findById(re.params.id)
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err);
+    });
 });
 
 router.get("/api/workouts", (req, res) => {
     Workout.find({})
+    .sort({ date: -1 })
     .then(dbWorkout => {
         res.json(dbWorkout);
     })
