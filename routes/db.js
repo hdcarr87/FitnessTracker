@@ -11,8 +11,10 @@ router.post("/api/workout", (req, res) => {
 });
 
 router.put("/api/workouts/:id", ({ body, params }, res) => {
+    console.log(req);
     Workout.findByIdAndUpdate(
-      req.params.id,
+        
+      params.id,
       { $push: { exercises: body }
     }).then(dbWorkout => {
         res.json(dbWorkout);
@@ -23,7 +25,7 @@ router.put("/api/workouts/:id", ({ body, params }, res) => {
 });
 
 router.get("/api/workouts/:id", (req, res) => {
-    Workout.findById(re.params.id)
+    Workout.findById(req.params.id)
     .then(dbWorkout => {
         res.json(dbWorkout);
     })
@@ -32,22 +34,32 @@ router.get("/api/workouts/:id", (req, res) => {
     });
 });
 
-router.get("/api/workouts", (req, res) => {
-    Workout.find({})
-    .sort({ date: -1 })
+router.get("/api/workouts/", (req, res) => {
+    Workout.find(req.params.id)
     .then(dbWorkout => {
         res.json(dbWorkout);
     })
     .catch(err => {
         res.json(err);
-    })
-})
+    });
+});
 
-router.get("/api/workouts/range", (req,res) => {
-    Workout.find({})
+// router.get("/api/workouts", (req, res) => {
+//     Workout.find({})
+//     .sort({ date: -1 })
+//     .then(dbWorkout => {
+//         res.json(dbWorkout);
+//     })
+//     .catch(err => {
+//         res.json(err);
+//     })
+// })
+
+router.get("/api/workouts/range", (req, res) => {
+    Workout.find(req)
     .sort({ date: -1})
     .then(dbWorkout => {
-        res.json(dbWorkout)
+        res.json(dbWorkout);
     })
     .catch(err => {
         res.json(err);
